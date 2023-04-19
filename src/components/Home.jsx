@@ -52,6 +52,21 @@ class Home extends Component {
             }
           </ul>
         </nav>
+        <form>
+          <label>
+            Digite aqui:
+            <input
+              data-testid="query-input"
+              name="queryInput"
+            />
+            <button
+              data-testid="query-button"
+              type="button"
+            >
+              Pesquisar
+            </button>
+          </label>
+        </form>
       </>
     );
   }
