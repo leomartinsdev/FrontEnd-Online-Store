@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { IconButton } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends Component {
   state = {
     categories: [], // salva o array de categorias retornado pela API no state
+    queryInput: '', // salva o que é digitado no input
+    arrApi: [], // salva o retorno da api
   };
 
   async componentDidMount() {
@@ -16,11 +18,47 @@ class Home extends Component {
     });
   }
 
+  onInputChange = (event) => {
+    const { target } = event;
+    const { value, name } = target;
+
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  onClickButton = async () => {
+    const { queryInput } = this.state;
+
+    const apiAlgo = await getProductsFromCategoryAndQuery('', queryInput);
+    this.setState({
+      queryInput: '',
+      arrApi: apiAlgo.results,
+    });
+  };
+
   render() {
-    const { categories } = this.state;
+    const { categories, queryInput, arrApi } = this.state;
     return (
       <>
-        <input type="text" />
+        <form>
+          <label>
+            Digite aqui:
+            <input
+              data-testid="query-input"
+              name="queryInput"
+              value={ queryInput }
+              onChange={ this.onInputChange }
+            />
+            <button
+              data-testid="query-button"
+              type="button"
+              onClick={ this.onClickButton }
+            >
+              Pesquisar
+            </button>
+          </label>
+        </form>
         <Link to="/cart">
           <IconButton data-testid="shopping-cart-button">
             <ShoppingCart />
@@ -52,21 +90,21 @@ class Home extends Component {
             }
           </ul>
         </nav>
-        <form>
-          <label>
-            Digite aqui:
-            <input
-              data-testid="query-input"
-              name="queryInput"
-            />
-            <button
-              data-testid="query-button"
-              type="button"
+        {arrApi.length === 0
+          ? (<h2>Nenhum produto foi encontrado</h2>)
+          : (arrApi.map((element) => (
+            <section
+              data-testid="product"
+              key={ element.id }
             >
-              Pesquisar
-            </button>
-          </label>
-        </form>
+              <h4>{element.title}</h4>
+              <img
+                src={ element.thumbnail }
+                alt={ element.name }
+              />
+              <h4>{element.price}</h4>
+            </section>
+          )))}
       </>
     );
   }
