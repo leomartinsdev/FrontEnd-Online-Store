@@ -34,6 +34,7 @@ class Home extends Component {
     const runRadioBtnApi = await getProductsFromCategoryAndQuery(productId, '');
     this.setState({
       arrApiRadio: runRadioBtnApi.results,
+      arrApi: '',
     });
   };
 
@@ -43,6 +44,7 @@ class Home extends Component {
     const apiAlgo = await getProductsFromCategoryAndQuery('', queryInput);
     this.setState({
       queryInput: '',
+      arrApiRadio: '',
       arrApi: apiAlgo.results,
     });
   };
