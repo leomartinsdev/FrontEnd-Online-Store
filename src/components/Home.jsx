@@ -9,6 +9,8 @@ class Home extends Component {
     categories: [], // salva o array de categorias retornado pela API no state
     queryInput: '', // salva o que é digitado no input
     arrApi: [], // salva o retorno da api
+    // radioInput: [], // salva os radio buttons selecionados
+    arrApiRadio: [], // salva o retorno da api quando utilizado o radio button
   };
 
   async componentDidMount() {
@@ -27,28 +29,38 @@ class Home extends Component {
     });
   };
 
+  handleRadioButton = async ({ target }) => {
+    const productId = target.value;
+    const runRadioBtnApi = await getProductsFromCategoryAndQuery(productId, '');
+    this.setState({
+      arrApiRadio: runRadioBtnApi.results,
+      arrApi: [],
+    });
+  };
+
   onClickButton = async () => {
     const { queryInput } = this.state;
 
     const apiAlgo = await getProductsFromCategoryAndQuery('', queryInput);
     this.setState({
       queryInput: '',
+      arrApiRadio: [],
       arrApi: apiAlgo.results,
     });
   };
 
   render() {
-    const { categories, queryInput, arrApi } = this.state;
+    const { categories, queryInput, arrApi, arrApiRadio } = this.state;
     return (
       <>
         <form>
           <label>
-            Digite aqui:
             <input
               data-testid="query-input"
               name="queryInput"
               value={ queryInput }
               onChange={ this.onInputChange }
+              placeholder="Digite aqui"
             />
             <button
               data-testid="query-button"
@@ -82,6 +94,7 @@ class Home extends Component {
                       name="category"
                       id={ category.id }
                       value={ category.id }
+                      onClick={ this.handleRadioButton }
                     />
                     { category.name }
                   </label>
@@ -90,20 +103,46 @@ class Home extends Component {
             }
           </ul>
         </nav>
-        {arrApi.length === 0
+        {arrApi.length === 0 && arrApiRadio.length === 0
           ? (<h2>Nenhum produto foi encontrado</h2>)
           : (arrApi.map((element) => (
-            <section
-              data-testid="product"
+            <Link
+              data-testid="product-detail-link"
               key={ element.id }
+              to={ `/productDetail/${element.id}` }
             >
-              <h4>{element.title}</h4>
-              <img
-                src={ element.thumbnail }
-                alt={ element.name }
-              />
-              <h4>{element.price}</h4>
-            </section>
+              <section
+                data-testid="product"
+                key={ element.id }
+              >
+                <h4>{element.title}</h4>
+                <img
+                  src={ element.thumbnail }
+                  alt={ element.name }
+                />
+                <h4>{element.price}</h4>
+              </section>
+            </Link>
+          )))}
+        {arrApiRadio.length > 0
+          && (arrApiRadio.map((elemento) => (
+            <Link
+              data-testid="product-detail-link"
+              key={ elemento.id }
+              to={ `/productDetail/${elemento.id}` }
+            >
+              <section
+                data-testid="product"
+                key={ elemento.id }
+              >
+                <h4>{elemento.title}</h4>
+                <img
+                  src={ elemento.thumbnail }
+                  alt={ elemento.name }
+                />
+                <h4>{elemento.price}</h4>
+              </section>
+            </Link>
           )))}
       </>
     );
