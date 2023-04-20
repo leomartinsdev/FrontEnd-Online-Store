@@ -9,6 +9,8 @@ class Home extends Component {
     categories: [], // salva o array de categorias retornado pela API no state
     queryInput: '', // salva o que é digitado no input
     arrApi: [], // salva o retorno da api
+    // radioInput: [], // salva os radio buttons selecionados
+    arrApiRadio: [], // salva o retorno da api quando utilizado o radio button
   };
 
   async componentDidMount() {
@@ -27,6 +29,18 @@ class Home extends Component {
     });
   };
 
+  handleRadioButton = async ({ target }) => {
+    const productId = target.value;
+    const runRadioBtnApi = await getProductsFromCategoryAndQuery(productId, '');
+    this.setState({
+      arrApiRadio: runRadioBtnApi.results,
+    });
+
+    // this.setState((prevState) => ({
+    //   radioInput: [...prevState.radioInput, productId],
+    // }));
+  };
+
   onClickButton = async () => {
     const { queryInput } = this.state;
 
@@ -38,7 +52,7 @@ class Home extends Component {
   };
 
   render() {
-    const { categories, queryInput, arrApi } = this.state;
+    const { categories, queryInput, arrApi, arrApiRadio } = this.state;
     return (
       <>
         <form>
@@ -82,6 +96,7 @@ class Home extends Component {
                       name="category"
                       id={ category.id }
                       value={ category.id }
+                      onClick={ this.handleRadioButton }
                     />
                     { category.name }
                   </label>
@@ -103,6 +118,20 @@ class Home extends Component {
                 alt={ element.name }
               />
               <h4>{element.price}</h4>
+            </section>
+          )))}
+        {arrApiRadio.length > 0
+          && (arrApiRadio.map((elemento) => (
+            <section
+              data-testid="product"
+              key={ elemento.id }
+            >
+              <h4>{elemento.title}</h4>
+              <img
+                src={ elemento.thumbnail }
+                alt={ elemento.name }
+              />
+              <h4>{elemento.price}</h4>
             </section>
           )))}
       </>
