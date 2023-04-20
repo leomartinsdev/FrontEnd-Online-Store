@@ -35,10 +35,6 @@ class Home extends Component {
     this.setState({
       arrApiRadio: runRadioBtnApi.results,
     });
-
-    // this.setState((prevState) => ({
-    //   radioInput: [...prevState.radioInput, productId],
-    // }));
   };
 
   onClickButton = async () => {
@@ -108,31 +104,43 @@ class Home extends Component {
         {arrApi.length === 0
           ? (<h2>Nenhum produto foi encontrado</h2>)
           : (arrApi.map((element) => (
-            <section
-              data-testid="product"
+            <Link
+              data-testid="product-detail-link"
               key={ element.id }
+              to={ `/productDetail/${element.id}` }
             >
-              <h4>{element.title}</h4>
-              <img
-                src={ element.thumbnail }
-                alt={ element.name }
-              />
-              <h4>{element.price}</h4>
-            </section>
+              <section
+                data-testid="product"
+                key={ element.id }
+              >
+                <h4>{element.title}</h4>
+                <img
+                  src={ element.thumbnail }
+                  alt={ element.name }
+                />
+                <h4>{element.price}</h4>
+              </section>
+            </Link>
           )))}
         {arrApiRadio.length > 0
           && (arrApiRadio.map((elemento) => (
-            <section
-              data-testid="product"
+            <Link
+              data-testid="product-detail-link"
               key={ elemento.id }
+              to={ `/productDetail/${elemento.id}` }
             >
-              <h4>{elemento.title}</h4>
-              <img
-                src={ elemento.thumbnail }
-                alt={ elemento.name }
-              />
-              <h4>{elemento.price}</h4>
-            </section>
+              <section
+                data-testid="product"
+                key={ elemento.id }
+              >
+                <h4>{elemento.title}</h4>
+                <img
+                  src={ elemento.thumbnail }
+                  alt={ elemento.name }
+                />
+                <h4>{elemento.price}</h4>
+              </section>
+            </Link>
           )))}
       </>
     );
