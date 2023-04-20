@@ -34,7 +34,7 @@ class Home extends Component {
     const runRadioBtnApi = await getProductsFromCategoryAndQuery(productId, '');
     this.setState({
       arrApiRadio: runRadioBtnApi.results,
-      arrApi: '',
+      arrApi: [],
     });
   };
 
@@ -44,7 +44,7 @@ class Home extends Component {
     const apiAlgo = await getProductsFromCategoryAndQuery('', queryInput);
     this.setState({
       queryInput: '',
-      arrApiRadio: '',
+      arrApiRadio: [],
       arrApi: apiAlgo.results,
     });
   };
@@ -55,12 +55,12 @@ class Home extends Component {
       <>
         <form>
           <label>
-            Digite aqui:
             <input
               data-testid="query-input"
               name="queryInput"
               value={ queryInput }
               onChange={ this.onInputChange }
+              placeholder="Digite aqui"
             />
             <button
               data-testid="query-button"
@@ -103,7 +103,7 @@ class Home extends Component {
             }
           </ul>
         </nav>
-        {arrApi.length === 0
+        {arrApi.length === 0 && arrApiRadio.length === 0
           ? (<h2>Nenhum produto foi encontrado</h2>)
           : (arrApi.map((element) => (
             <Link
