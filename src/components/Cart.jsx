@@ -9,7 +9,7 @@ class Cart extends Component {
   componentDidMount() {
     const cartProductsFromStorage = getProductsOnStorage();
     this.setState({
-      cartProducts: cartProductsFromStorage,
+      cartProducts: cartProductsFromStorage, // recupera a lista salva no storage e seta ela no state
     });
   }
 
@@ -21,11 +21,11 @@ class Cart extends Component {
           cartProducts.length === 0
             ? 'Seu carrinho está vazio'
             : cartProducts.map((element) => (
-              <>
+              <div key={ element.id }>
                 <p data-testid="shopping-cart-product-name">{element.title}</p>
                 <p>{element.price}</p>
                 <p data-testid="shopping-cart-product-quantity">{element.quantity}</p>
-              </>
+              </div>
             ))
         }
       </div>

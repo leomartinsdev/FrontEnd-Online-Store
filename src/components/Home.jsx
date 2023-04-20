@@ -50,9 +50,10 @@ class Home extends Component {
     });
   };
 
+  // Função ativada com o clique do botão de Adicionar ao Carrinho. Ela adiciona o produto específico no localStorage com todas as informações do objeto, além de acrescentar a chave de quantidade com o valor 1 para ele
   addProductsToCart = (product) => {
     const oldList = getProductsOnStorage();
-    const newList = [...oldList, { ...product, quantity: 1 }];
+    const newList = [...oldList, { ...product, quantity: 1 }]; // recupera a lista antiga, acrescentando nela o novo produto
     setProductsOnStorage(newList);
   };
 
