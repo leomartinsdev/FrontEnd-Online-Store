@@ -3,6 +3,7 @@ import { IconButton } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductsOnStorage, setProductsOnStorage } from '../services/localStorage';
 
 class Home extends Component {
   state = {
@@ -47,6 +48,12 @@ class Home extends Component {
       arrApiRadio: [],
       arrApi: apiAlgo.results,
     });
+  };
+
+  addProductsToCart = (product) => {
+    const oldList = getProductsOnStorage();
+    const newList = [...oldList, { ...product, quantity: 1 }];
+    setProductsOnStorage(newList);
   };
 
   render() {
@@ -106,14 +113,14 @@ class Home extends Component {
         {arrApi.length === 0 && arrApiRadio.length === 0
           ? (<h2>Nenhum produto foi encontrado</h2>)
           : (arrApi.map((element) => (
-            <Link
-              data-testid="product-detail-link"
+            <section
+              data-testid="product"
               key={ element.id }
-              to={ `/productDetail/${element.id}` }
             >
-              <section
-                data-testid="product"
+              <Link
+                data-testid="product-detail-link"
                 key={ element.id }
+                to={ `/productDetail/${element.id}` }
               >
                 <h4>{element.title}</h4>
                 <img
@@ -121,19 +128,26 @@ class Home extends Component {
                   alt={ element.name }
                 />
                 <h4>{element.price}</h4>
-              </section>
-            </Link>
+                <button
+                  data-testid="product-add-to-cart"
+                  type="button"
+                  onClick={ () => this.addProductsToCart(element) }
+                >
+                  Adicione ao carrinho
+                </button>
+              </Link>
+            </section>
           )))}
         {arrApiRadio.length > 0
           && (arrApiRadio.map((elemento) => (
-            <Link
-              data-testid="product-detail-link"
+            <section
+              data-testid="product"
               key={ elemento.id }
-              to={ `/productDetail/${elemento.id}` }
             >
-              <section
-                data-testid="product"
+              <Link
+                data-testid="product-detail-link"
                 key={ elemento.id }
+                to={ `/productDetail/${elemento.id}` }
               >
                 <h4>{elemento.title}</h4>
                 <img
@@ -141,8 +155,15 @@ class Home extends Component {
                   alt={ elemento.name }
                 />
                 <h4>{elemento.price}</h4>
-              </section>
-            </Link>
+              </Link>
+              <button
+                data-testid="product-add-to-cart"
+                type="button"
+                onClick={ () => this.addProductsToCart(elemento) }
+              >
+                Adicione ao carrinho
+              </button>
+            </section>
           )))}
       </>
     );
