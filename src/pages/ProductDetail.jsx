@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
+import { getProductsOnStorage, setProductsOnStorage } from '../services/localStorage';
 
 export default class ProductDetail extends Component {
   state = {
@@ -20,6 +21,12 @@ export default class ProductDetail extends Component {
     });
   }
 
+  addProductsToCart = (product) => {
+    const oldList = getProductsOnStorage();
+    const newList = [...oldList, { ...product, quantity: 1 }]; // recupera a lista antiga, acrescentando nela o novo produto
+    setProductsOnStorage(newList);
+  };
+
   render() {
     const { match } = this.props;
     const { params } = match;
@@ -35,6 +42,13 @@ export default class ProductDetail extends Component {
           alt={ currentProductInfo.name }
         />
         <h3 data-testid="product-detail-price">{ currentProductInfo.price }</h3>
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          onClick={ () => this.addProductsToCart(currentProductInfo) }
+        >
+          Adicione ao carrinho
+        </button>
         <Link data-testid="shopping-cart-button" to="/cart">
           <button type="button">Carrinho</button>
         </Link>
