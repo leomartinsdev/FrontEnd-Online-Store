@@ -9,3 +9,15 @@ export function getProductsOnStorage() {
   }
   return [];
 }
+
+export function setEvaOnStorage(avaliacao) {
+  localStorage.setItem('evaluation', JSON.stringify(avaliacao));
+}
+
+export function getEvaOnStorage() {
+  const avaliacao = JSON.parse(localStorage.getItem('evaluation'));
+  if (avaliacao) {
+    return avaliacao;
+  }
+  return [];
+}
