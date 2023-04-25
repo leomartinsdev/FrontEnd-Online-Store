@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 
 class Evaluation extends Component {
   render() {
-    const { email, textEvaluation, radioButton } = this.props;
+    const { email, text, rating } = this.props;
     return (
       <div>
         <p data-testid="review-card-email">
           {email}
         </p>
         <p data-testid="review-card-rating">
-          {radioButton}
+          {rating}
         </p>
         <p data-testid="review-card-evaluation">
-          {textEvaluation}
+          {text}
         </p>
       </div>
     );
@@ -22,8 +22,8 @@ class Evaluation extends Component {
 
 Evaluation.propTypes = {
   email: PropTypes.string,
-  textEvaluation: PropTypes.string,
-  radioButton: PropTypes.string,
+  text: PropTypes.string,
+  rating: PropTypes.string,
 }.isRequired;
 
 export default Evaluation;

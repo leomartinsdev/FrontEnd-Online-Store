@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Evaluation from './Evaluation';
-import { setEvasOnStorage, getEvasOnStorage } from '../services/localStorage';
+import { setEvaOnStorage, getEvaOnStorage } from '../services/localStorage';
 
 class Forms extends Component {
   state = {
     email: '',
-    textEvaluation: '',
-    radioButton: '',
+    text: '',
+    rating: '',
     buttonClick: false,
     avaliacao: [],
-
   };
+
+  componentDidMount() {
+    const arrAvaliacao = getEvaOnStorage();
+    this.setState({
+      avaliacao: arrAvaliacao,
+    });
+  }
 
   onInputChange = (event) => {
     const { target } = event;
@@ -22,21 +29,25 @@ class Forms extends Component {
   };
 
   onClickButton = () => {
-    const { email, radioButton, textEvaluation, avaliacao } = this.state;
+    const { email, rating, text, avaliacao } = this.state;
     const valEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const valERegex = valEmail.test(email);
     const tudo = {
       email,
-      text: textEvaluation,
-      rating: radioButton,
+      text,
+      rating,
     };
-    if (email.length > 0 && radioButton !== '' && valERegex) {
+    if (email.length > 0 && rating !== '' && valERegex) {
       console.log('clicou');
+      const { match: { params: { id } } } = this.props;
+      const arrAvaliacao = getEvaOnStorage();
+      const arrAvaliacaoNew = [...arrAvaliacao, tudo];
+      setEvaOnStorage(id, arrAvaliacaoNew);
       this.setState({
         avaliacao: [...avaliacao, tudo],
         email: '',
-        radioButton: '',
-        textEvaluation: '',
+        rating: '',
+        text: '',
         buttonClick: false,
       });
     } else {
@@ -48,7 +59,7 @@ class Forms extends Component {
   };
 
   render() {
-    const { email, textEvaluation, buttonClick, avaliacao } = this.state;
+    const { email, text, buttonClick, avaliacao } = this.state;
     return (
       <div>
         <h2>Avaliação do produto</h2>
@@ -70,7 +81,7 @@ class Forms extends Component {
               type="radio"
               data-testid="1-rating"
               value="1"
-              name="radioButton"
+              name="rating"
               onChange={ this.onInputChange }
             />
           </label>
@@ -80,7 +91,7 @@ class Forms extends Component {
               type="radio"
               data-testid="2-rating"
               value="2"
-              name="radioButton"
+              name="rating"
               onChange={ this.onInputChange }
             />
           </label>
@@ -90,7 +101,7 @@ class Forms extends Component {
               type="radio"
               data-testid="3-rating"
               value="3"
-              name="radioButton"
+              name="rating"
               onChange={ this.onInputChange }
             />
           </label>
@@ -100,7 +111,7 @@ class Forms extends Component {
               type="radio"
               data-testid="4-rating"
               value="4"
-              name="radioButton"
+              name="rating"
               onChange={ this.onInputChange }
             />
           </label>
@@ -110,7 +121,7 @@ class Forms extends Component {
               type="radio"
               data-testid="5-rating"
               value="5"
-              name="radioButton"
+              name="rating"
               onChange={ this.onInputChange }
             />
           </label>
@@ -118,8 +129,8 @@ class Forms extends Component {
             <input
               type="text"
               data-testid="product-detail-evaluation"
-              name="textEvaluation"
-              value={ textEvaluation }
+              name="text"
+              value={ text }
               onChange={ this.onInputChange }
             />
           </label>
@@ -139,8 +150,8 @@ class Forms extends Component {
             <Evaluation
               key={ index }
               email={ element.email }
-              textEvaluation={ element.textEvaluation }
-              radioButton={ element.radioButton }
+              text={ element.text }
+              rating={ element.rating }
             />
           ))
         )}
@@ -148,5 +159,11 @@ class Forms extends Component {
     );
   }
 }
+
+Forms.propTypes = {
+  match: PropTypes.any,
+  params: PropTypes.any,
+  id: PropTypes.any,
+}.isRequired;
 
 export default Forms;
