@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Add, Remove, Clear } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { getProductsOnStorage, setProductsOnStorage } from '../services/localStorage';
@@ -92,6 +93,15 @@ class Cart extends Component {
               </IconButton>
             </div>
           ))}
+        <Link
+          to="/checkout"
+        >
+          <button
+            data-testid="checkout-products"
+          >
+            Finalizar compra
+          </button>
+        </Link>
       </div>
     );
   }
