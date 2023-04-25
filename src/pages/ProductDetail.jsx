@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
 import { getProductsOnStorage, setProductsOnStorage } from '../services/localStorage';
+import Forms from '../components/Forms';
 
 export default class ProductDetail extends Component {
   state = {
@@ -41,7 +42,7 @@ export default class ProductDetail extends Component {
           src={ currentProductInfo.thumbnail }
           alt={ currentProductInfo.name }
         />
-        <h3 data-testid="product-detail-price">{ currentProductInfo.price }</h3>
+        <h3 data-testid="product-detail-price">{currentProductInfo.price}</h3>
         <button
           data-testid="product-detail-add-to-cart"
           type="button"
@@ -52,6 +53,8 @@ export default class ProductDetail extends Component {
         <Link data-testid="shopping-cart-button" to="/cart">
           <button type="button">Carrinho</button>
         </Link>
+
+        <Forms id={ id } />
       </div>
     );
   }
