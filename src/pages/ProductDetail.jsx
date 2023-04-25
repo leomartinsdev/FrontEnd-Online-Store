@@ -54,7 +54,7 @@ export default class ProductDetail extends Component {
           <button type="button">Carrinho</button>
         </Link>
 
-        <Forms />
+        <Forms id={ id } />
       </div>
     );
   }

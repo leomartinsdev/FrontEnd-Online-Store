@@ -13,7 +13,8 @@ class Forms extends Component {
   };
 
   componentDidMount() {
-    const arrAvaliacao = getEvaOnStorage();
+    const { id } = this.props;
+    const arrAvaliacao = getEvaOnStorage(id);
     this.setState({
       avaliacao: arrAvaliacao,
     });
@@ -39,7 +40,7 @@ class Forms extends Component {
     };
     if (email.length > 0 && rating !== '' && valERegex) {
       console.log('clicou');
-      const { match: { params: { id } } } = this.props;
+      const { id } = this.props;
       const arrAvaliacao = getEvaOnStorage();
       const arrAvaliacaoNew = [...arrAvaliacao, tudo];
       setEvaOnStorage(id, arrAvaliacaoNew);
@@ -161,9 +162,7 @@ class Forms extends Component {
 }
 
 Forms.propTypes = {
-  match: PropTypes.any,
-  params: PropTypes.any,
-  id: PropTypes.any,
+  id: PropTypes.string,
 }.isRequired;
 
 export default Forms;

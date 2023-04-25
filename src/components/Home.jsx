@@ -129,14 +129,14 @@ class Home extends Component {
                   alt={ element.name }
                 />
                 <h4>{element.price}</h4>
-                <button
-                  data-testid="product-add-to-cart"
-                  type="button"
-                  onClick={ () => this.addProductsToCart(element) }
-                >
-                  Adicione ao carrinho
-                </button>
               </Link>
+              <button
+                data-testid="product-add-to-cart"
+                type="button"
+                onClick={ () => this.addProductsToCart(element) }
+              >
+                Adicione ao carrinho
+              </button>
             </section>
           )))}
         {arrApiRadio.length > 0
